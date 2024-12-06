@@ -23,9 +23,7 @@ parser.add_argument("--l1d_assoc", type=int, default=2, help="L1 data cache asso
 parser.add_argument("--l2_assoc", type=int, default=8, help="L2 cache associativity. Default: 8.")
 
 # Peter: Block size parameter added for both L1I/L1D and L2 caches.
-parser.add_argument("--l1i_block_size", type=int, default=64, help="Block size for L1 instruction cache in bytes. Default: 64.")
-parser.add_argument("--l1d_block_size", type=int, default=64, help="Block size for L1 data cache in bytes. Default: 64.")
-parser.add_argument("--l2_block_size", type=int, default=64, help="Block size for L2 cache in bytes. Default: 64.")
+parser.add_argument("--block_size", type=int, default=64, help="Block size for L1 instruction cache in bytes. Default: 64.")
 
 # Kurtis: Eviction policy parameter added for cache customization.
 parser.add_argument("--eviction_policy", default="random", choices=["random", "lru", "fifo"],
@@ -40,6 +38,8 @@ system.clk_domain.voltage_domain = VoltageDomain()
 system.mem_mode = 'timing'
 system.mem_ranges = [AddrRange('512MB')]
 system.cpu = X86TimingSimpleCPU()
+
+system.cache_line_size = options.block_size
 
 # Set up caches with specified sizes and parameters
 system.cpu.icache = L1ICache(options)
